@@ -89,6 +89,10 @@ export class AuthService {
   // Delete a user by id
   async deleteUser2(id: number) {
     const result = await this.users2Repository.delete(id);
-    return result ?? 0;
+    if (result.affected && result.affected > 0) {
+      return { statusCode: 204, message: 'User successfully deleted' };
+    } else {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
   }
 }
