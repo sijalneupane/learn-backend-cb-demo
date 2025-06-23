@@ -1,4 +1,5 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength, ArrayNotEmpty, ArrayUnique, IsInt } from 'class-validator';
+import { Role } from '../enum/role.enum';
 
 export class CreateUsers2Dto {
     @IsNotEmpty()
@@ -14,6 +15,8 @@ export class CreateUsers2Dto {
     @MinLength(6)
     password: string;
 
+    @IsNotEmpty()
+    role: Role;
     // @IsOptional()
     // @ArrayNotEmpty()
     // @ArrayUnique()
