@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -13,6 +14,7 @@ import { JWTAuthGuard } from 'src/core/guards/jwt-authenticate.guard';
 import { JwtService } from '@nestjs/jwt';
 import { SignInDto } from '../dto/signin.dto';
 import { JwtPayload } from '../interface/jwt.payload';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -24,15 +26,26 @@ export class AuthService {
 
   // Create a new user
   async createUser2(createUser2Dto: CreateUsers2Dto) {
+    // Check if the user already exists
+    const existingUser = await this.users2Repository.findOneBy({
+      email: createUser2Dto.email,
+    });
+    if (existingUser) {
+      throw new UnauthorizedException('User already exists');
+    }
+    
+    const hashedPassword = await bcrypt.hash(createUser2Dto.password, 10);
+    createUser2Dto.password = hashedPassword;
     const newUser = this.users2Repository.create(createUser2Dto);
-    return await this.users2Repository.save(newUser);
+    const savedUser = await this.users2Repository.save(newUser);
+    const { password, ...userWithoutPassword } = savedUser;
+    return userWithoutPassword;
   }
 
   async login(signInDto: SignInDto) {
-    const { email, password } = signInDto;
-    const user = await this.users2Repository.findOneBy({ email });
+    const user = await this.users2Repository.findOneBy({ email: signInDto.email });
 
-    if (!user || user.password !== password) {
+    if (!user || !(await bcrypt.compare(signInDto.password, user.password))) {
       throw new UnauthorizedException('Invalid credentials');
     }
     const payload: JwtPayload = {
@@ -43,9 +56,10 @@ export class AuthService {
     };
     const token = this.jwtService.sign(payload);
 
+    const { password, ...userWithoutPassword } = user;
     return {
       access_token: token,
-      user,
+      user:userWithoutPassword ,
     };
   }
   // Get all users
