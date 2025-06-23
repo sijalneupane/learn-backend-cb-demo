@@ -55,5 +55,11 @@ export class AuthController {
   async deleteUser2(@Param('id', ParseIntPipe) id: number) {
     return this.authService.deleteUser2(id);
   }
-
+  // Protected route example
+  // This route is protected and can only be accessed by JWT authenticated users with the ADMIN role
+  @UseGuards(JWTAuthGuard)
+  @Get('protected/authenticated')
+  viewAuthenticatedRoute() {
+    return { message: 'Only accessible with valid JWT token, Welcome if you reach here !' };
+  }
 }
