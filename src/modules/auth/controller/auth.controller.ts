@@ -60,6 +60,19 @@ export class AuthController {
   @UseGuards(JWTAuthGuard)
   @Get('protected/authenticated')
   viewAuthenticatedRoute() {
-    return { message: 'Only accessible with valid JWT token, Welcome if you reach here !' };
+    return {
+      message:
+        'Only accessible with valid JWT token, Welcome if you reach here !',
+    };
+  }
+  // Example of a route that requires a specific role like ADMIN
+  @UseGuards(JWTAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  @Get('protected/admin')
+  viewAdminRoute() {
+    return {
+      message:
+        'Only accessible with valid JWT token and ADMIN role, You are admin if you reach here !',
+    };
   }
 }
