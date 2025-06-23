@@ -19,11 +19,11 @@ import { RolesGuard } from 'src/core/guards/role.guard';
 import { Roles } from 'src/core/decorators/roles.decorator';
 import { Role } from '../enum/role.enum';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
+  @Post('signup')
   async createUser2(@Body() createUsers2Dto: CreateUsers2Dto) {
     return this.authService.createUser2(createUsers2Dto);
   }
@@ -33,17 +33,17 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
-  @Get()
+  @Get('users')
   async getAllUsers2() {
     return this.authService.getAllUsers2();
   }
 
-  @Get('/:id')
+  @Get('users/:id')
   async getUser2ById(@Param('id', ParseIntPipe) id: number) {
     return this.authService.getUser2ById(id);
   }
 
-  @Put('/:id')
+  @Put('users/:id')
   async updateUser2(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUsers2Dto: UpdateUsers2Dto,
@@ -51,7 +51,7 @@ export class AuthController {
     return this.authService.updateUser2(id, updateUsers2Dto);
   }
 
-  @Delete('/:id')
+  @Delete('users/:id')
   async deleteUser2(@Param('id', ParseIntPipe) id: number) {
     return this.authService.deleteUser2(id);
   }
