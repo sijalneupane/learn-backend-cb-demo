@@ -28,6 +28,26 @@ export class AuthService {
     return await this.users2Repository.save(newUser);
   }
 
+  async login(signInDto: SignInDto) {
+    const { email, password } = signInDto;
+    const user = await this.users2Repository.findOneBy({ email });
+
+    if (!user || user.password !== password) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    const payload: JwtPayload = {
+      sub: user.id.toString(),
+      username: user.username,
+      role: user.role,
+      email: user.email,
+    };
+    const token = this.jwtService.sign(payload);
+
+    return {
+      access_token: token,
+      user,
+    };
+  }
   // Get all users
   async getAllUsers2() {
     return await this.users2Repository.find();

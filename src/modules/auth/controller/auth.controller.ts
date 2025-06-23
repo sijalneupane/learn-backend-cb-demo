@@ -28,6 +28,11 @@ export class AuthController {
     return this.authService.createUser2(createUsers2Dto);
   }
 
+  @Post('login')
+  async login(@Body() loginDto: SignInDto) {
+    return this.authService.login(loginDto);
+  }
+
   @Get()
   async getAllUsers2() {
     return this.authService.getAllUsers2();
@@ -50,4 +55,5 @@ export class AuthController {
   async deleteUser2(@Param('id', ParseIntPipe) id: number) {
     return this.authService.deleteUser2(id);
   }
+
 }
