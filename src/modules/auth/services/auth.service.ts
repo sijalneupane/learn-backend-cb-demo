@@ -64,7 +64,8 @@ export class AuthService {
   }
   // Get all users
   async getAllUsers2() {
-    return await this.users2Repository.find();
+    const users = await this.users2Repository.find();
+    return users.map(({ password, ...userWithoutPassword }) => userWithoutPassword);
   }
 
   // Get a user by id
@@ -73,7 +74,8 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
-    return user;
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 
   // Update a user by id
@@ -82,8 +84,26 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
+    // Check if the email is being updated and if it already exists
+    if (updateUsers2Dto.email && updateUsers2Dto.email !== user.email) {
+      const existingUser = await this.users2Repository.findOneBy({
+        email: updateUsers2Dto.email,
+      });
+      if (existingUser) {
+        throw new UnauthorizedException('Email already in use');
+      }
+    }
+    // If password is being updated, hash it
+    if (updateUsers2Dto.password!==null && updateUsers2Dto.password !== undefined) {
+      updateUsers2Dto.password = await bcrypt.hash(updateUsers2Dto.password, 10);
+    }
     await this.users2Repository.update(id, updateUsers2Dto);
-    return await this.users2Repository.findOneBy({ id });
+    const updatedUser = await this.users2Repository.findOneBy({ id });
+    if (updatedUser) {
+      const { password, ...userWithoutPassword } = updatedUser;
+      return userWithoutPassword;
+    }
+    return null;
   }
 
   // Delete a user by id
