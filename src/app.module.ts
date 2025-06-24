@@ -5,6 +5,7 @@ import ormConfig from './core/config/migrations/orm.config';
 import { AppService } from './core/app/app.service';
 import { AppController } from './core/app/app.controller';
 import { AuthModule } from './modules/auth/auth.module';
+import { CourseModule } from './modules/course/course.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
 
     AuthModule,
+    CourseModule
 
   ],
   controllers: [AppController],
