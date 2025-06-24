@@ -14,8 +14,4 @@ export class CreateCourseDto {
     @IsOptional()
     tags: string[];
 
-    @IsArray()
-    @IsInt({ each: true })
-    @IsOptional()
-    users: number[]; // array of user IDs
 }
