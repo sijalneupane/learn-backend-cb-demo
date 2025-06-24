@@ -20,7 +20,7 @@ export class Users2 {
     @Column()
     password: string;
     
-    @ManyToMany(() => Course, (course) => course.users)
+    @ManyToMany(() => Course, (course) => course.users,{cascade: true})
     @JoinTable({ name: 'users2_course' })
     courses: Course[];
 }
