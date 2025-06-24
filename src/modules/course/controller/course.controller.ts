@@ -32,7 +32,7 @@ export class CourseController {
   }
 
   // Remove guards for this route only
-  @Get('allcourses')
+  @Get('view-all')
   @Roles(Role.USER, Role.ADMIN)
   @UseGuards() // This disables guards for this route
   async viewAllCourses() {
