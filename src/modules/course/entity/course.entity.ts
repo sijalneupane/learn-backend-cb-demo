@@ -15,8 +15,11 @@ export class Course {
   @Column({ length: 255 })
   title: string;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text'})
   description: string;
+
+  @Column('simple-array')
+  tags: string[];
 
   @ManyToMany(() => Users2, (users) => users.courses)
   users: Users2[];
