@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -13,6 +14,7 @@ import { RolesGuard } from 'src/core/guards/role.guard';
 import { Roles } from 'src/core/decorators/roles.decorator';
 import { Role } from 'src/modules/auth/enum/role.enum';
 import { CreateCourseDto } from '../dto/create-course.dto';
+import { UpdateCourseDto } from '../dto/update-course.dto';
 
 @UseGuards(JWTAuthGuard, RolesGuard)
 @Controller('course')
@@ -31,12 +33,19 @@ export class CourseController {
     return this.courseService.findById(courseId);
   }
 
-  // Remove guards for this route only
   @Get('view-all')
   @Roles(Role.USER, Role.ADMIN)
-  @UseGuards() // This disables guards for this route
   async viewAllCourses() {
     return this.courseService.findAll();
+  }
+
+  @Put('update/:courseId')
+  @Roles(Role.ADMIN)
+  async updateCourse(
+    @Param('courseId') courseId: number,
+    @Body() updateCourseDto: UpdateCourseDto,
+  ) {
+    return this.courseService.updateCourse(courseId, updateCourseDto);
   }
 
   @Post('delete/:courseId')
