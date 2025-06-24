@@ -1,6 +1,7 @@
 import { Entity, JoinTable, ManyToMany } from "typeorm";
 import { PrimaryGeneratedColumn, Column } from "typeorm";
 import { Role } from "../enum/role.enum";
+import { Course } from "src/modules/course/entity/course.entity";
 
 @Entity()
 export class Users2 {
@@ -19,7 +20,7 @@ export class Users2 {
     @Column()
     password: string;
     
-//     @ManyToMany(() => Courses, (course) => course.users2)
-//     @JoinTable({ name: 'users2_courses' })
-//     courses: Courses[];
+    @ManyToMany(() => Course, (course) => course.users)
+    @JoinTable({ name: 'users2_course' })
+    courses: Course[];
 }
