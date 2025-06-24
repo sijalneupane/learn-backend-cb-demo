@@ -11,7 +11,5 @@ export class CreateCourseDto {
 
     @IsArray()
     @IsString({ each: true })
-    @IsOptional()
     tags: string[];
-
 }
