@@ -10,8 +10,8 @@ export default registerAs('orm.config', (): TypeOrmModuleOptions => {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
-    synchronize: process.env.DB_SYNCHRONIZE === 'true',
-    logging: process.env.DB_LOGGING === 'true', // true = enable logging
+    synchronize: process.env.DB_SYNCHRONIZE === 'false',
+    logging: process.env.DB_LOGGING === 'false', // true = enable logging
     autoLoadEntities: true, // Auto loads entities from the app
     entities: [
       path.resolve(__dirname, '..', '**/*.entity{.ts,.js}'),
