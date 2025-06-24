@@ -8,9 +8,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Users2]),
-  PassportModule,
- JwtModule.registerAsync({
+  imports: [
+    TypeOrmModule.forFeature([Users2]),
+    PassportModule,
+    JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
@@ -18,7 +19,7 @@ import { PassportModule } from '@nestjs/passport';
       }),
       inject: [ConfigService],
     }),
-], // Add your entities here if needed
+  ], // Add your entities here if needed
   providers: [AuthService],
   controllers: [AuthController],
   exports: [AuthService, JwtModule],
