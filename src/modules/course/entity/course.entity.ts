@@ -15,7 +15,7 @@ export class Course {
   @Column({ length: 255 })
   title: string;
 
-  @Column({ type: 'text'})
+  @Column({ type: 'text' })
   description: string;
 
   @Column('simple-array')
