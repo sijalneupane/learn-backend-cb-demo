@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -48,7 +49,7 @@ export class CourseController {
     return this.courseService.updateCourse(courseId, updateCourseDto);
   }
 
-  @Post('delete/:courseId')
+  @Delete('delete/:courseId')
   @Roles(Role.ADMIN)
   async deleteCourseById(@Param('courseId') courseId: number) {
     return this.courseService.deleteCourseById(courseId);
