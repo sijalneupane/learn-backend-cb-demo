@@ -52,18 +52,29 @@ export class CourseService {
     return this.courseRepository.save(course);
   }
 
-  async deleteCourseById(
-    courseId: number,
-  ): Promise<{ statusCode: number; message: string }> {
-    const result = await this.courseRepository.delete(courseId);
-    if (result.affected === 0) {
-      throw new NotFoundException('Course not found');
-    }
-    return {
-      statusCode: 200,
-      message: 'Course deleted successfully',
-    };
+async deleteCourseById(courseId: number): Promise<{ statusCode: number; message: string }> {
+  const course = await this.courseRepository.findOne({
+    where: { id: courseId },
+    relations: ['users'], // load join table relations
+  });
+
+  if (!course) {
+    throw new NotFoundException('Course not found');
   }
+
+  // Remove all associations to users
+  course.users = [];
+  await this.courseRepository.save(course);
+
+  // Now safely delete the course
+  await this.courseRepository.delete(courseId);
+
+  return {
+    statusCode: 200,
+    message: 'Course deleted successfully',
+  };
+}
+
 
   async joinCourseByUser(
     userId: number,
