@@ -5,7 +5,7 @@ import { KhaltiService, PaymentInitiateResponse } from '../service/khalti.servic
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 @ApiTags('khalti')
 @Controller('khalti')
-export class KhaltiController {
+export class PaymentController {
   constructor(private khaltiService: KhaltiService) {}
 
   @ApiBody({description:"verify payment after taking token id",type:VerifyPaymentDto})
