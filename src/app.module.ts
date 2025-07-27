@@ -6,7 +6,7 @@ import { AppService } from './core/app/app.service';
 import { AppController } from './core/app/app.controller';
 import { AuthModule } from './modules/auth/auth.module';
 import { CourseModule } from './modules/course/course.module';
-import { KhaltiModule } from './modules/khalti/khalti.module';
+import { KhaltiModule } from './modules/payment/khalti.module';
 
 @Module({
   imports: [
