@@ -18,6 +18,7 @@ import { SignInDto } from '../dto/signin.dto';
 import { RolesGuard } from 'src/core/guards/role.guard';
 import { Roles } from 'src/core/decorators/roles.decorator';
 import { Role } from '../enum/role.enum';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('api/auth')
 export class AuthController {
@@ -65,6 +66,8 @@ export class AuthController {
         'Only accessible with valid JWT token, Welcome if you reach here !',
     };
   }
+  
+  @ApiBearerAuth()
   // Example of a route that requires a specific role like ADMIN
   @UseGuards(JWTAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)

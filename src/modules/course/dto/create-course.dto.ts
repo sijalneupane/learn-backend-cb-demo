@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNotEmpty, IsArray, IsInt } from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty, IsArray, IsNumber } from 'class-validator';
 
 export class CreateCourseDto {
     @IsString()
@@ -8,6 +8,10 @@ export class CreateCourseDto {
     @IsString()
     @IsOptional()
     description: string;
+
+    @IsNumber()
+    @IsNotEmpty()   
+    fee: number;
 
     @IsArray()
     @IsString({ each: true })

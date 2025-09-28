@@ -16,12 +16,12 @@ import { Roles } from 'src/core/decorators/roles.decorator';
 import { Role } from 'src/modules/auth/enum/role.enum';
 import { CreateCourseDto } from '../dto/create-course.dto';
 import { UpdateCourseDto } from '../dto/update-course.dto';
-
+import { ApiBearerAuth } from '@nestjs/swagger';
+@ApiBearerAuth()
 @UseGuards(JWTAuthGuard, RolesGuard)
 @Controller('course')
 export class CourseController {
   constructor(private readonly courseService: CourseService) {}
-
   @Post('create')
   @Roles(Role.ADMIN)
   async createCourse(@Body() createCourseDto: CreateCourseDto) {

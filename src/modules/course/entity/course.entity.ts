@@ -21,6 +21,9 @@ export class Course {
   @Column('simple-array')
   tags: string[];
 
+  @Column({ type: 'decimal', precision: 10, scale: 2 ,default:1000})
+  fee: number;
+
   @ManyToMany(() => Users2, (users) => users.courses)
   users: Users2[];
 
